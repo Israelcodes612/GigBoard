@@ -1,0 +1,12 @@
+import type { Category, Gig } from '../types'
+
+export const gigs: Gig[] = [
+  { id: 1, category: 'Design', title: "I'll design your logo", person: 'Chidi Anyanwu', department: 'CS dept.', price: '₦4,000', rating: '4.8', reviews: 23, delivery: '3 days', description: 'Clean, simple logo design with 2 concepts and up to 2 rounds of revisions. Delivered as PNG and SVG.', pin: 'bg-coral', tag: 'bg-[#fff0ed] text-[#e1493a]', rotation: '-1.2deg' },
+  { id: 2, category: 'Repairs', title: 'Laptop screen & battery fix', person: 'Israel Olasupo', department: 'CS dept.', price: '₦6,500', rating: '5.0', reviews: 18, delivery: '1 day', description: 'Fast, careful hardware fixes for common laptop screen and battery issues. Parts are quoted before work starts.', pin: 'bg-mint', tag: 'bg-[#e9fbf5] text-[#22a87e]', rotation: '1deg' },
+  { id: 3, category: 'Writing', title: 'Essay editing & proofreading', person: 'Ngozi Eze', department: 'English dept.', price: '₦2,000', rating: '4.6', reviews: 31, delivery: '2 days', description: 'Clearer structure, stronger grammar, and a final proofread for essays, applications, and personal projects.', pin: 'bg-sun', tag: 'bg-[#fff7df] text-[#c08311]', rotation: '-.6deg' },
+  { id: 4, category: 'Dev', title: 'Build you a simple landing page', person: 'Tunde Balogun', department: 'CS dept.', price: '₦12,000', rating: '4.9', reviews: 12, delivery: '5 days', description: 'A polished, responsive landing page for your project or small business, built with clean modern code.', pin: 'bg-lav', tag: 'bg-[#f0eeff] text-[#7160d5]', rotation: '.8deg' },
+  { id: 5, category: 'Tutoring', title: '1-on-1 calculus tutoring', person: 'Grace Emmanuel', department: 'Maths dept.', price: '₦1,500/hr', rating: '4.8', reviews: 26, delivery: 'Flexible', description: 'Patient, one-on-one help with calculus topics, past questions, and building confidence before exams.', pin: 'bg-coral', tag: 'bg-[#fff0ed] text-[#e1493a]', rotation: '-1deg' },
+  { id: 6, category: 'Dev', title: 'Debug your school project code', person: 'Israel Olasupo', department: 'CS dept.', price: '₦3,000', rating: '5.0', reviews: 18, delivery: '2 days', description: 'Find the bug, explain what happened, and get your project back on track without the mystery.', pin: 'bg-mint', tag: 'bg-[#e9fbf5] text-[#22a87e]', rotation: '.4deg' },
+]
+
+export const categories: Array<'All' | Category> = ['All', 'Design', 'Dev', 'Repairs', 'Writing', 'Tutoring']
