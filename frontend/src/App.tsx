@@ -72,7 +72,7 @@ function App() {
     : '?'
 
   if (loading) {
-    return <div className="board-texture flex min-h-screen items-center justify-center bg-board text-paper text-sm text-white/50">Loading…</div>
+    return <div className="loading-screen board-texture flex min-h-screen items-center justify-center bg-board text-paper"><div className="loading-mark"><span className="h-3.5 w-3.5 rounded-full bg-coral" /><span className="font-display text-lg font-bold tracking-tight">GigBoard</span></div></div>
   }
 
   return <div className="board-texture min-h-screen bg-board text-paper">
@@ -87,13 +87,15 @@ function App() {
       {isAuthenticated && <button onClick={handleLogout} className="rounded-lg px-4 py-3 text-left text-white/60">Sign out</button>}
     </nav></aside></div>
     {notice && <div className="notice-enter fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-lg bg-mint px-4 py-3 text-sm font-semibold text-board shadow-2xl"><Check size={16} /> {notice}</div>}
-    {view === 'browse' && <BrowsePage onOpenGig={(gig) => navigate('gig', gig)} />}
-    {view === 'gig' && selectedGig && <GigPage gig={selectedGig} onBack={() => navigate('browse')} onProfile={() => navigate('profile')} onRequest={() => { if (!isAuthenticated) { setAuthRedirect('orders'); navigate('auth'); return } showNotice('Request sent. Check My orders for updates.'); navigate('orders') }} />}
-    {view === 'profile' && <ProfilePage onGig={(gig) => navigate('gig', gig)} />}
-    {view === 'create' && <CreatePage newGig={newGig} setNewGig={setNewGig} onSubmit={() => { showNotice('Your gig is pinned to the board.'); navigate('browse') }} />}
-    {view === 'orders' && <OrdersPage tab={orderTab} setTab={setOrderTab} onOpen={() => navigate('order')} />}
-    {view === 'order' && <OrderPage onBack={() => navigate('orders')} onSend={() => showNotice('Message sent.')} />}
-    {view === 'auth' && <AuthPage onSubmit={completeAuth} />}
+    <div key={view} className="page-content-enter">
+      {view === 'browse' && <BrowsePage onOpenGig={(gig) => navigate('gig', gig)} />}
+      {view === 'gig' && selectedGig && <GigPage gig={selectedGig} onBack={() => navigate('browse')} onProfile={() => navigate('profile')} onRequest={() => { if (!isAuthenticated) { setAuthRedirect('orders'); navigate('auth'); return } showNotice('Request sent. Check My orders for updates.'); navigate('orders') }} />}
+      {view === 'profile' && <ProfilePage onGig={(gig) => navigate('gig', gig)} />}
+      {view === 'create' && <CreatePage newGig={newGig} setNewGig={setNewGig} onSubmit={() => { showNotice('Your gig is pinned to the board.'); navigate('browse') }} />}
+      {view === 'orders' && <OrdersPage tab={orderTab} setTab={setOrderTab} onOpen={() => navigate('order')} />}
+      {view === 'order' && <OrderPage onBack={() => navigate('orders')} onSend={() => showNotice('Message sent.')} />}
+      {view === 'auth' && <AuthPage onSubmit={completeAuth} />}
+    </div>
   </div>
 }
 
