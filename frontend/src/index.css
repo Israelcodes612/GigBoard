@@ -23,6 +23,11 @@ button:focus-visible, input:focus-visible { outline: 2px solid #ff6b5b; outline-
 .page-shell-enter { animation: page-enter .4s ease both; }
 .notice-enter { animation: notice-enter .25s ease both; }
 @keyframes notice-enter { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.category-slider { overflow: hidden; }
+.category-slider > div { scrollbar-width: none; }
+.category-slider > div::-webkit-scrollbar { display: none; }
+.slider-arrow { position: absolute; top: 50%; z-index: 20; display: flex; height: 28px; width: 28px; transform: translateY(-50%); align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: 9999px; background: #29283a; color: rgba(255,255,255,.7); }
+.slider-arrow:hover { border-color: #ff6b5b; color: #fbf8f2; }
 @media (max-width: 767px) {
 	.auth-page { min-height: 100dvh; overflow-y: auto; overscroll-behavior-y: contain; scroll-padding-bottom: 2rem; }
 	.auth-page:focus-within { padding-top: 1rem; padding-bottom: 50vh; }
