@@ -15,4 +15,8 @@ button { cursor: pointer; }
 .note-tilt:hover { transform: rotate(0deg) translateY(-4px); box-shadow: 0 22px 38px -16px rgba(0,0,0,.7); }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .animate-rise { animation: rise .45s ease both; }
+@media (max-width: 767px) {
+	.auth-page { min-height: 100dvh; overflow-y: auto; overscroll-behavior-y: contain; }
+	.auth-page:focus-within .page-shell-header { display: none; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }

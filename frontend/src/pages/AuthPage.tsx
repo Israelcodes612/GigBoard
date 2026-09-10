@@ -42,7 +42,7 @@ export function AuthPage({ onSubmit }: AuthPageProps) {
     setError(null)
   }
 
-  return <PageShell eyebrow="07 · Welcome back" title={mode === 'login' ? 'Good work starts here.' : 'Make your mark on the board.'} description={mode === 'login' ? 'Sign in to pick up where you left off.' : 'Post gigs, request one, and build a reputation around useful work.'}>
+  return <PageShell className="auth-page" eyebrow="Welcome back" title={mode === 'login' ? 'Good work starts here.' : 'Make your mark on the board.'} description={mode === 'login' ? 'Sign in to pick up where you left off.' : 'Post gigs, request one, and build a reputation around useful work.'}>
     <div className="mx-auto grid max-w-4xl overflow-hidden rounded-2xl border border-white/10 bg-board-alt shadow-2xl md:grid-cols-[.85fr_1.15fr]">
       <div className="relative hidden overflow-hidden bg-coral p-8 text-board md:flex md:flex-col md:justify-between"><span className="absolute -right-12 -top-12 h-40 w-40 rounded-full border-[22px] border-board/10" /><span className="absolute -bottom-16 -left-12 h-44 w-44 rounded-full border-[24px] border-board/10" /><div className="relative"><div className="mb-12 flex items-center gap-2.5"><span className="h-3.5 w-3.5 rounded-full bg-board" /><span className="font-display text-lg font-bold tracking-tight">GigBoard</span></div><p className="font-mono text-[11px] uppercase tracking-[.18em]">A useful community</p><h2 className="mt-4 max-w-xs font-display text-3xl font-bold leading-tight">Small skills. Real momentum.</h2></div><p className="relative max-w-xs text-sm leading-6 text-board/70">Find the person who can help, or become the person someone else is looking for.</p></div>
       <form onSubmit={handleSubmit} className="p-6 sm:p-9">
