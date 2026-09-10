@@ -16,7 +16,9 @@ button { cursor: pointer; }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .animate-rise { animation: rise .45s ease both; }
 @media (max-width: 767px) {
-	.auth-page { min-height: 100dvh; overflow-y: auto; overscroll-behavior-y: contain; }
+	.auth-page { min-height: 100dvh; overflow-y: auto; overscroll-behavior-y: contain; scroll-padding-bottom: 2rem; }
+	.auth-page:focus-within { padding-top: 1rem; padding-bottom: 50vh; }
 	.auth-page:focus-within .page-shell-header { display: none; }
+	.auth-page:focus-within .auth-card { transform: translateY(-1.5rem); }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
