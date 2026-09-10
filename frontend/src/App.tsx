@@ -86,7 +86,7 @@ function App() {
       {!isAuthenticated && <button onClick={() => navigate('auth')} className="rounded-lg px-4 py-3 text-left text-white/60">Sign in</button>}
       {isAuthenticated && <button onClick={handleLogout} className="rounded-lg px-4 py-3 text-left text-white/60">Sign out</button>}
     </nav></aside></div>}
-    {notice && <div className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-lg bg-mint px-4 py-3 text-sm font-semibold text-board shadow-2xl"><Check size={16} /> {notice}</div>}
+    {notice && <div className="notice-enter fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-lg bg-mint px-4 py-3 text-sm font-semibold text-board shadow-2xl"><Check size={16} /> {notice}</div>}
     {view === 'browse' && <BrowsePage onOpenGig={(gig) => navigate('gig', gig)} />}
     {view === 'gig' && selectedGig && <GigPage gig={selectedGig} onBack={() => navigate('browse')} onProfile={() => navigate('profile')} onRequest={() => { if (!isAuthenticated) { setAuthRedirect('orders'); navigate('auth'); return } showNotice('Request sent. Check My orders for updates.'); navigate('orders') }} />}
     {view === 'profile' && <ProfilePage onGig={(gig) => navigate('gig', gig)} />}
