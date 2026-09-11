@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Bell, BriefcaseBusiness, Check, CirclePlus, Menu, X, LogOut } from 'lucide-react'
 import { BrowsePage } from './pages/BrowsePage'
 import { AuthPage } from './pages/AuthPage'
@@ -47,6 +47,27 @@ function App() {
     window.addEventListener('popstate', syncView)
     return () => window.removeEventListener('popstate', syncView)
   }, [isAuthenticated, loading])
+
+  const previousScrollY = useRef(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      const root = document.documentElement
+
+      if (currentScrollY <= 8 || currentScrollY < previousScrollY.current - 6) {
+        root.classList.remove('mobile-header-hidden')
+      } else if (currentScrollY > previousScrollY.current + 6) {
+        root.classList.add('mobile-header-hidden')
+        setMobileNav(false)
+      }
+
+      previousScrollY.current = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const showNotice = (message: string) => {
     setNotice(message)

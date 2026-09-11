@@ -35,7 +35,16 @@ button:focus-visible, input:focus-visible { outline: 2px solid #ff6b5b; outline-
 .category-slider > div::-webkit-scrollbar { display: none; }
 .slider-arrow { position: absolute; top: 50%; z-index: 20; display: flex; height: 28px; width: 28px; transform: translateY(-50%); align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: 9999px; background: #29283a; color: rgba(255,255,255,.7); }
 .slider-arrow:hover { border-color: #ff6b5b; color: #fbf8f2; }
+#browse { padding-top: 1.5rem; }
+#browse > div:first-child > div:first-child > p { font-size: 0; }
+#browse > div:first-child > div:first-child > p::after { content: 'The board'; font-size: 11px; }
+.gig-detail-page { padding-top: 1.5rem; }
+.gig-detail-page .page-shell-header > p { font-size: 0; }
+.gig-detail-page .page-shell-header > p::after { content: 'Gig detail'; font-size: 11px; }
+@media (min-width: 1024px) { #browse { padding-top: 2.5rem; } }
 @media (max-width: 767px) {
+	header { transition: transform .3s ease; }
+	.mobile-header-hidden header { transform: translateY(-100%); }
 	.auth-page { min-height: 100dvh; overflow-y: auto; overscroll-behavior-y: contain; scroll-padding-bottom: 2rem; }
 	.auth-page:focus-within { padding-top: 1rem; padding-bottom: 50vh; }
 	.auth-page:focus-within .page-shell-header { display: none; }
