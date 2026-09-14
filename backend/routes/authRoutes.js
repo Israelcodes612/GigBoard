@@ -1,12 +1,21 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { signup, login, refresh, logout } from '../controllers/authController.js';
 import { requireAuth } from '../middleware/auth.js';
 import { findUserById } from '../models/User.js';
 
 const router = express.Router();
 
-router.post('/signup', signup);
-router.post('/login', login);
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'Too many attempts. Try again in a few minutes.' },
+});
+
+router.post('/signup', loginLimiter, signup);
+router.post('/login', loginLimiter, login);
 router.post('/refresh', refresh);
 router.post('/logout', logout);
 

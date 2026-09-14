@@ -38,6 +38,9 @@ export async function signup(req, res) {
     if (password.length < 8) {
       return res.status(400).json({ message: 'Password must be at least 8 characters' });
     }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      return res.status(400).json({ message: 'Please provide a valid email address' });
+    }
 
     const existing = await findUserByEmail(email.toLowerCase());
     if (existing) {
@@ -136,11 +139,11 @@ export async function refresh(req, res) {
     await revokeRefreshToken(tokenHash);
 
     const user = await findUserById(payload.userId);
-if (!user) {
-  return res.status(401).json({ message: 'User no longer exists' });
-}
-const newAccessToken = generateAccessToken(user);
-const newRefreshToken = generateRefreshToken(user);
+    if (!user) {
+      return res.status(401).json({ message: 'User no longer exists' });
+    }
+    const newAccessToken = generateAccessToken(user);
+    const newRefreshToken = generateRefreshToken(user);
 
     await storeRefreshToken({
       userId: user.id,

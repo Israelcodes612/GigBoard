@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, Compass, MessageCircle, Search, SlidersHorizontal, Star } from 'lucide-react'
-import { gigs, categories } from '../data/gigs'
+import { categories, gigs as seedGigs } from '../data/gigs'
+import { fetchGigs } from '../api/gigs'
 import { GigCard } from '../components/GigCard'
 import { Step } from '../components/Step'
 import type { Category, Gig } from '../types'
@@ -10,8 +11,22 @@ type BrowsePageProps = { onOpenGig: (gig: Gig) => void }
 export function BrowsePage({ onOpenGig }: BrowsePageProps) {
   const [activeCategory, setActiveCategory] = useState<'All' | Category>('All')
   const [query, setQuery] = useState('')
+  const [gigs, setGigs] = useState<Gig[]>(seedGigs)
   const categoryRail = useRef<HTMLDivElement>(null)
-  const filteredGigs = useMemo(() => gigs.filter((gig) => (activeCategory === 'All' || gig.category === activeCategory) && `${gig.title} ${gig.person} ${gig.category}`.toLowerCase().includes(query.toLowerCase())), [activeCategory, query])
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const live = await fetchGigs()
+        if (live.length > 0) setGigs(live)
+      } catch (err) {
+        console.warn('Could not load gigs from API, showing sample board', err)
+      }
+    }
+    load()
+  }, [])
+
+  const filteredGigs = useMemo(() => gigs.filter((gig) => (activeCategory === 'All' || gig.category === activeCategory) && `${gig.title} ${gig.person} ${gig.category}`.toLowerCase().includes(query.toLowerCase())), [activeCategory, query, gigs])
 
   const slideCategories = (direction: number) => {
     categoryRail.current?.scrollBy({ left: direction * 180, behavior: 'smooth' })

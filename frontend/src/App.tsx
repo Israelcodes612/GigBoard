@@ -5,6 +5,7 @@ import { AuthPage } from './pages/AuthPage'
 import { CreatePage, GigPage, OrderPage, OrdersPage, ProfilePage } from './pages/MarketplacePages'
 import type { Gig, NewGig, View } from './types'
 import { useAuth } from './context/AuthContext'
+import { createGig } from './api/gigs'
 
 function App() {
   const { user, loading, logout } = useAuth()
@@ -26,26 +27,46 @@ function App() {
     setView(nextView)
     setSelectedGig(gig)
     setMobileNav(false)
-    window.history.replaceState(null, '', nextView === 'browse' ? '#browse' : `#${nextView}`)
+
+    const hash = nextView === 'browse' ? '#browse' : `#${nextView}`
+    const previous = window.history.state as { view?: View } | null
+    if (previous && previous.view === nextView) {
+      window.history.replaceState({ view: nextView, gig }, '', hash)
+    } else {
+      window.history.pushState({ view: nextView, gig }, '', hash)
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   useEffect(() => {
     if (loading) return // don't decide protected routes until we know if user is logged in
 
-    const syncView = () => {
-      const hash = window.location.hash.slice(1) as View
-      if (!['browse', 'gig', 'profile', 'create', 'orders', 'order', 'auth'].includes(hash)) return
-      if (!isAuthenticated && ['create', 'orders', 'order'].includes(hash)) {
-        setAuthRedirect(hash)
+    const applyView = (nextView: View, gig: Gig | null) => {
+      if (!isAuthenticated && ['create', 'orders', 'order'].includes(nextView)) {
+        setAuthRedirect(nextView)
         setView('auth')
         return
       }
-      setView(hash)
+      setView(nextView)
+      setSelectedGig(nextView === 'gig' ? gig : null)
     }
-    syncView()
-    window.addEventListener('popstate', syncView)
-    return () => window.removeEventListener('popstate', syncView)
+
+    const onPopState = (event: PopStateEvent) => {
+      const state = event.state as { view: View; gig: Gig | null } | null
+      if (state && ['browse', 'gig', 'profile', 'create', 'orders', 'order', 'auth'].includes(state.view)) {
+        applyView(state.view, state.gig)
+        setMobileNav(false)
+      }
+    }
+
+    // Initial load: read the hash directly (no popstate fires for the first entry)
+    const hash = window.location.hash.slice(1) as View
+    if (['browse', 'gig', 'profile', 'create', 'orders', 'order', 'auth'].includes(hash)) {
+      applyView(hash, null)
+    }
+
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
   }, [isAuthenticated, loading])
 
   const previousScrollY = useRef(0)
@@ -78,7 +99,7 @@ function App() {
     showNotice('Welcome to the board.')
     setView(authRedirect)
     setSelectedGig(null)
-    window.history.replaceState(null, '', authRedirect === 'browse' ? '#browse' : `#${authRedirect}`)
+    window.history.replaceState({ view: authRedirect, gig: null }, '', authRedirect === 'browse' ? '#browse' : `#${authRedirect}`)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -86,6 +107,18 @@ function App() {
     await logout()
     showNotice('Signed out.')
     navigate('browse')
+  }
+
+  const handleCreateGig = async () => {
+    try {
+      await createGig(newGig)
+      setNewGig({ title: '', category: 'Design', description: '', price: '', delivery: '' })
+      showNotice('Your gig is pinned to the board.')
+      navigate('browse')
+    } catch (err) {
+      console.warn('Could not create gig', err)
+      showNotice('Could not post your gig. Try again.')
+    }
   }
 
   const initials = user?.full_name
@@ -112,7 +145,7 @@ function App() {
       {view === 'browse' && <BrowsePage onOpenGig={(gig) => navigate('gig', gig)} />}
       {view === 'gig' && selectedGig && <GigPage gig={selectedGig} onBack={() => navigate('browse')} onProfile={() => navigate('profile')} onRequest={() => { if (!isAuthenticated) { setAuthRedirect('orders'); navigate('auth'); return } showNotice('Request sent. Check My orders for updates.'); navigate('orders') }} />}
       {view === 'profile' && <ProfilePage onGig={(gig) => navigate('gig', gig)} />}
-      {view === 'create' && <CreatePage newGig={newGig} setNewGig={setNewGig} onSubmit={() => { showNotice('Your gig is pinned to the board.'); navigate('browse') }} />}
+      {view === 'create' && <CreatePage newGig={newGig} setNewGig={setNewGig} onSubmit={handleCreateGig} />}
       {view === 'orders' && <OrdersPage tab={orderTab} setTab={setOrderTab} onOpen={() => navigate('order')} />}
       {view === 'order' && <OrderPage onBack={() => navigate('orders')} onSend={() => showNotice('Message sent.')} />}
       {view === 'auth' && <AuthPage onSubmit={completeAuth} />}

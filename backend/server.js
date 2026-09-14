@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
 import authRoutes from './routes/authRoutes.js';
+import gigRoutes from './routes/gigRoutes.js';
+import { startTokenCleanupJob } from './utils/tokenCleanup.js';
 
 dotenv.config();
 
@@ -18,9 +20,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/gigs', gigRoutes);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 app.listen(PORT, () => {
   console.log(`GigBoard backend running on http://localhost:${PORT}`);
+  startTokenCleanupJob();
 });

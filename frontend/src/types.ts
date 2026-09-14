@@ -1,7 +1,7 @@
 export type Category = 'Design' | 'Repairs' | 'Writing' | 'Dev' | 'Tutoring'
 
 export type Gig = {
-  id: number
+  id: string
   category: Category
   title: string
   person: string
